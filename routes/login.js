@@ -11,7 +11,7 @@ router.post('/login', (req, res) => {
 
   if(resposta.status === 'error') res.json({message: resposta.message, status: 400});
   
-  else res.json({message: resposta.message, status: 200});
+  else res.json(resposta);
 });
 
 module.exports = router;
