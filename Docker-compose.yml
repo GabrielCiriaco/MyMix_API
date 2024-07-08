@@ -1,0 +1,14 @@
+version: '3'
+services:
+  backend:
+    build:
+      env_file: .env
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - db_data:prisma/dev.db:rw
+    ports:
+      - "80:${APP_PORT}"
+volumes:
+  db_data:
+  
