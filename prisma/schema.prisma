@@ -19,6 +19,7 @@ model Music {
   id         String @id @default(cuid())
   title       String              
   artist      String
+  lyrics      String
   playlists   FavoritesPlaylist[] @relation
 
   @@unique([title, artist])

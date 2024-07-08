@@ -6,4 +6,5 @@ interface findOneBySongAndArtistNameDTO {
 interface createDTO {
     songName: string;
     artistName: string;
+    lyrics: string;
 }

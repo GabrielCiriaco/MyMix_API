@@ -10,26 +10,31 @@ interface GetMusicResponse {
     songName: string;
     lyrics: string;
 }
-interface ApiResponse {
-    response: ResponseData;
-    highlighting: HighlightingData;
-}
 
-interface ResponseData {
-    numFound: number;
-    start: number;
-    numFoundExact: boolean;
-    docs: Doc[];
-}
-
-interface Doc {
+interface Artista {
     id: string;
-    langID?: number;
+    name: string;
     url: string;
-    title?: string;
-    band: string;
-    fmRadios?: string[];
 }
 
-interface HighlightingData {
+interface Musica {
+    id: string;
+    name: string;
+    lang: number;
+    url: string;
+    text: string;
+    translate: Traducao[];
+}
+
+interface Traducao {
+    id: string;
+    lang: number;
+    url: string;
+    text: string;
+}
+
+interface Dados {
+    type: 'exact';
+    art: Artista;
+    mus: Musica[];
 }

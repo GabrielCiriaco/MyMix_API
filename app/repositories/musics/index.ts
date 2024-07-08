@@ -30,6 +30,7 @@ export class MusicsRepository {
 			data: {
 				title: data.songName,
 				artist: data.artistName,
+				lyrics: data.lyrics
 			},
 		})
 	}
