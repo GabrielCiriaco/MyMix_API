@@ -10,5 +10,11 @@
     "username": "Gabriel Ciriaco",
     "email": "teste@teste.com",
     "password": "112233"
+  },
+  {
+    "id": 3,
+    "username": "asd",
+    "email": "paulofornitano@gmail.com",
+    "password": "$2b$10$nJy34kBtf2iFMwE1TtbQDODOLntWBUJXON6xnAM5jp/yCaTZ/Qbu."
   }
 ]

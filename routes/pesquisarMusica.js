@@ -1,8 +1,10 @@
 const express = require('express');
+const { authenticateToken } = require('../middleware/authMiddleware');
+
 const router = express.Router();
 const { getMusics } = require('../controllers/pesquisarMusicaController');
 
-router.post('/pesquisarMusica', async (req, res) => {
+router.post('/pesquisarMusica', authenticateToken, async (req, res) => {
   const { artist, music } = req.body;
 
   const artistCode = encodeURIComponent(artist);

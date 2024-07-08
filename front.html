@@ -3,11 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta Vagalume API</title>
+    <title>Consulta API</title>
 </head>
 <body>
+    <h1>Login</h1>
+    <form id="loginForm" action="http://localhost:3000/login" method="post">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="password">Senha:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <h1>Registrar Usuário</h1>
+    <form id="registerForm" action="http://localhost:3000/createUser" method="post">
+        <label for="username">Nome de Usuário:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="registerEmail">Email:</label>
+        <input type="email" id="registerEmail" name="email" required><br><br>
+
+        <label for="registerPassword">Senha:</label>
+        <input type="password" id="registerPassword" name="password" required><br><br>
+
+        <button type="submit">Registrar</button>
+    </form>
+
     <h1>Buscar Música</h1>
-    <form action="http://localhost:3000/pesquisarMusica" method="post">
+    <form id="searchMusicForm" action="http://localhost:3000/pesquisarMusica" method="post">
         <label for="artist">Artista:</label>
         <input type="text" id="artist" name="artist" required><br><br>
 
@@ -16,5 +41,188 @@
 
         <button type="submit">Buscar</button>
     </form>
+
+    <h1>Gerenciar Músicas Favoritas</h1>
+    <!-- Formulário para favoritar uma música -->
+    <form id="favoritarMusicaForm" action="http://localhost:3000/favoritarMusica" method="post">
+        <label for="favoritarUsuario">Usuário:</label>
+        <input type="text" id="favoritarUsuario" name="usuario" required><br><br>
+
+        <label for="favoritarArtist">Artista:</label>
+        <input type="text" id="favoritarArtist" name="artista" required><br><br>
+
+        <label for="favoritarMusic">Música:</label>
+        <input type="text" id="favoritarMusic" name="musica" required><br><br>
+
+        <button type="submit">Favoritar</button>
+    </form>
+
+    <!-- Formulário para listar músicas favoritas -->
+    <form id="listarFavoritasForm" action="http://localhost:3000/minhasFavoritas" method="get">
+        <label for="listarUsuario">Usuário:</label>
+        <input type="text" id="listarUsuario" name="usuario" required><br><br>
+
+        <button type="submit">Listar Músicas Favoritas</button>
+    </form>
+
+    <!-- Formulário para deletar uma música favorita -->
+    <form id="deletarMusicaFavoritaForm" action="http://localhost:3000/desfavoritarMusica" method="post">
+        <label for="desfavoritarUsuario">Usuário:</label>
+        <input type="text" id="desfavoritarUsuario" name="usuario" required><br><br>
+
+        <label for="desfavoritarArtist">Artista:</label>
+        <input type="text" id="desfavoritarArtist" name="artista" required><br><br>
+
+        <label for="desfavoritarMusic">Música:</label>
+        <input type="text" id="desfavoritarMusic" name="musica" required><br><br>
+
+        <button type="submit">Deçetar Favorita</button>
+    </form>
+
+    <script>
+        let token = '';
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+
+            const response = await fetch(form.action, {
+                method: form.method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            console.log(result);
+
+            if (result.status === 'success') {
+                token = result.token;
+                alert('Login bem-sucedido!');
+            } else {
+                alert('Erro no login: ' + result.message);
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+
+            const response = await fetch(form.action, {
+                method: form.method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            console.log(result);
+
+            if (result.status === 'success') {
+                alert('Usuário registrado com sucesso!');
+            } else {
+                alert('Erro ao registrar: ' + result.message);
+            }
+        });
+
+        document.getElementById('searchMusicForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+
+            const response = await fetch(form.action, {
+                method: form.method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `${token}`
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            console.log(result);
+        });
+
+        document.getElementById('favoritarMusicaForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+
+            const response = await fetch(form.action, {
+                method: form.method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `${token}`
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            console.log(result);
+
+            if (result.status === 'success') {
+                alert('Música favoritada com sucesso!');
+            } else {
+                alert('Erro ao favoritar música: ' + result.message);
+            }
+        });
+
+        document.getElementById('listarFavoritasForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+
+            const response = await fetch(form.action + `?usuario=${form.querySelector('#listarUsuario').value}`, {
+                method: form.method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `${token}`
+                }
+            });
+
+            const result = await response.json();
+            console.log(result);
+
+            if (result.status === 'success') {
+                // Exibir as músicas favoritas, por exemplo, em um alert ou em uma lista na página
+                alert('Músicas favoritas listadas com sucesso!');
+                console.log(result.musicasFavoritas); // Supondo que result.musicasFavoritas seja o array de músicas favoritas
+            } else {
+                alert('Erro ao listar músicas favoritas: ' + result.message);
+            }
+        });
+
+        document.getElementById('deletarMusicaFavoritaForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+
+            const response = await fetch(form.action, {
+                method: form.method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `${token}`
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            console.log(result);
+
+            if (result.status === 'success') {
+                alert('Música favoritada com sucesso!');
+            } else {
+                alert('Erro ao favoritar música: ' + result.message);
+            }
+        });
+    </script>
 </body>
 </html>

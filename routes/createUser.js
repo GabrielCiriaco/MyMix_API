@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { addUser } = require('../controllers/userController');
+const { addUser, changePassword } = require('../controllers/userController');
+const { authenticateToken } = require('../middleware/authMiddleware');
+
 
 
 
@@ -12,6 +14,13 @@ router.post('/createUser', (req, res) => {
   if(resposta.status === 'error') res.json( {message: resposta.message, status: 400});
   
   else res.json( {message: resposta.message, status: 200});
+});
+
+router.put('/changePassword', authenticateToken, (req, res) => {
+  const { email, oldPassword, newPassword } = req.body;
+  const resposta = changePassword(email, oldPassword, newPassword);
+  
+  res.json(resposta);
 });
 
 module.exports = router;
