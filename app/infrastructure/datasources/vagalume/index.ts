@@ -1,5 +1,4 @@
 import { logger } from '@/infrastructure/logger'
-import { NotFoundMusicError } from './errors'
 
 class Vagalume {
 	private baseUrl: string
@@ -12,26 +11,18 @@ class Vagalume {
 
 	async getMusics(data: GetMusicDTO): Promise<GetMusicResponse> {
 		logger.info(`Searching for music ${data.songName} by ${data.artistName}`)
-		const url = `${this.baseUrl}search.artmus?apikey=${encodeURIComponent(this.API_KEY)}&q=${encodeURIComponent(data.artistName + data.songName)}&limit=3`
+		const url =  `${this.baseUrl}search.php?art=${data.artistName}&mus=${data.songName}&extra=relmus,relart&apikey=${this.API_KEY}`
 		const response = await fetch(url)
-		const responseJson = await response.json() as ApiResponse
+		const responseJson = await response.json() as Dados
 
 		logger.info(`Response from Vagalume API: ${JSON.stringify(responseJson)}`)
 
-		if (
-			responseJson.response.numFound === 0
-			||
-			responseJson.response.numFoundExact === false
-			||
-			responseJson.response.docs.map(doc => doc.band.toLocaleLowerCase()).includes(data.artistName.toLocaleLowerCase()) === false
-		) {
-			throw new NotFoundMusicError(data.artistName, data.songName)
-		}
 
 		logger.info(`Music ${data.songName} by ${data.artistName} found in Vagalume API`)
 		return {
-			artistName: responseJson.response.docs[0].band,
-			songName: responseJson.response.docs[0].title,
+			artistName: responseJson.art.name,
+			songName: responseJson.mus[0]?.name,
+			lyrics: responseJson.mus[0]?.text,
 		} as GetMusicResponse
 	}
 }

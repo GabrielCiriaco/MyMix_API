@@ -61,6 +61,7 @@ export class MusicsService {
 		return await this.musicsRepository.create({
 			artistName: vagalumeMusic.artistName.toLocaleLowerCase(),
 			songName: vagalumeMusic.songName.toLocaleLowerCase(),
+			lyrics: vagalumeMusic.lyrics
 		})
 	}
 
