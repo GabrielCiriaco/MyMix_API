@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String              @id @default(cuid())
+  email              String              @unique
+  name               String?
+  password           String
+  favoritesPlaylists FavoritesPlaylist[] @relation
+}
+
+model Music {
+  id         String @id @default(cuid())
+  title       String              
+  artist      String
+  playlists   FavoritesPlaylist[] @relation
+
+  @@unique([title, artist])
+}
+
+model FavoritesPlaylist {
+  id      String @id @default(cuid())
+  userId  String 
+  musicId String
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade) 
+  music Music @relation(fields: [musicId], references: [id], onDelete: Cascade, onUpdate: Cascade) 
+
+  @@unique([userId, musicId])
+}
+
+// Fiz esse schema pensando na seguinte regra:
+//  - Cada música é única no banco de dados
+//  - Cada usuário pode ter várias músicas em sua lista de reprodução de favoritos.
+//  - Cada música pode estar presente em múltiplas listas de reprodução de diferentes usuários, \
+//      mas não mais de uma vez na lista de reprodução de favoritos de um mesmo usuário.
