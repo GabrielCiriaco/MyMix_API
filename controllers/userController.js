@@ -14,7 +14,7 @@ function verifyUser(email, password) {
 
   if (user.password !== password) return {message: 'Senha incorreta', status: 'error'};
 
-  return {message: 'Usuário logado com sucesso', status: 'success'};
+  return {message: 'Usuário logado com sucesso', status: 'success', userid: user.id, username: user.username};
 };
 
 function addUser(username, email, password) {
