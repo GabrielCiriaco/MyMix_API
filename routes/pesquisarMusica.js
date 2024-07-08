@@ -11,11 +11,11 @@ router.post('/pesquisarMusica', authenticateToken, async (req, res) => {
   const musicCode = encodeURIComponent(music);
 
   if (!artist || !music) {
-    return res.json({ message: 'Os campos artist e music são obrigatórios', status: 400 });
+    return res.status(400).json({ message: 'Os campos artista e música são obrigatórios' });
   }
 
   const results = await getMusics(artistCode, musicCode);
-  res.json(results);
+  res.status(results.status).json(results);
 });
 
 module.exports = router;

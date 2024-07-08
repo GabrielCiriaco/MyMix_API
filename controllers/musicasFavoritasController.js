@@ -28,7 +28,7 @@ function addMusicaFavorita(usuario, artista, musica) {
 
   musicas.push({ usuario, artista, musica });
 
-  fs.writeFileSync(musicasbd, JSON.stringify(musicas));
+  fs.writeFileSync(musicasbd, JSON.stringify(musicas, null, 2));
   
   return { message: 'Música favorita adicionada com sucesso', status: 201 };
 }
@@ -45,7 +45,7 @@ function deleteMusicaFavorita(usuario, artista, musica) {
 
   musicasFavoritas.splice(musicaIndex, 1);
 
-  fs.writeFileSync(musicasbd, JSON.stringify(musicasFavoritas));
+  fs.writeFileSync(musicasbd, JSON.stringify(musicasFavoritas,null, 2));
 
 
   return{ message: 'Música favorita removida com sucesso', status: 200 };
