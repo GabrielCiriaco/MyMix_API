@@ -16,21 +16,21 @@ model User {
 }
 
 model Music {
-  id         String @id @default(cuid())
-  title       String              
-  artist      String
-  lyrics      String
-  playlists   FavoritesPlaylist[] @relation
+  id        String              @id @default(cuid())
+  title     String
+  artist    String
+  lyrics    String
+  playlists FavoritesPlaylist[] @relation
 
   @@unique([title, artist])
 }
 
 model FavoritesPlaylist {
   id      String @id @default(cuid())
-  userId  String 
+  userId  String
   musicId String
-  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade) 
-  music Music @relation(fields: [musicId], references: [id], onDelete: Cascade, onUpdate: Cascade) 
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  music   Music  @relation(fields: [musicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([userId, musicId])
 }
